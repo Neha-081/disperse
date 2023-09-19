@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { mergeAndCount } from "../../utils";
+import TextAreaWithLineNumber from 'text-area-with-line-number';
 
 const Disperse = () => {
   const [address, setAddress] = useState("");
@@ -89,13 +90,12 @@ const Disperse = () => {
 
   //function for keeping the first address
   const handleKeepFirst = () => {
-    const filteredArr = [];
+    let str = "";
     arr?.filter((el) => {
       Object.entries(duplicateAddress)?.map(([key, value], i) => {
         if (el.address === key && value[0] === el.index + 1) {
-          filteredArr.push(el.address + " " + el.amount);
-          const result = filteredArr.join(" ");
-          setAddress(result);
+          str += el.address + " " + el.amount + "\n";
+          setAddress(str);
         }
       });
     });
@@ -104,13 +104,12 @@ const Disperse = () => {
   //function to combine the amount of duplicate addresses
   const handleCombine = () => {
     const sumRes = mergeAndCount(arr);
-    const resArr = [];
+    let str = "";
     sumRes?.map((item) => {
       Object.entries(duplicateAddress)?.map(([key, value], i) => {
         if (item.address === key && value[0] === item.index + 1) {
-          resArr.push(item.address + " " + item.amount);
-          const result = resArr.join(" ");
-          setAddress(result);
+          str += item.address + " " + item.amount + "\n";
+          setAddress(str);
         }
       });
     });
@@ -120,11 +119,13 @@ const Disperse = () => {
     <>
       <h2>Validate your Address</h2>
       <div className="main-cont">
-        <textarea
+        {/* <textarea
+          rows = {arr?.length} 
           value={address}
           onChange={handleAddressChange}
           placeholder="Type here..."
-        />
+        /> */}
+         <TextAreaWithLineNumber value={address} onChange={handleAddressChange}/>
       </div>
       <button onClick={handleValidate} className="button">
         Next
@@ -142,7 +143,7 @@ const Disperse = () => {
             </div>
           )}
           <div className="error-message">
-            {errorMessage.map((err, index) => (
+            {errorMessage?.map((err, index) => (
               <p key={index} className="error-text">
                 {err}
               </p>

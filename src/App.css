@@ -2,18 +2,6 @@
   text-align: center;
 }
 
-textarea {
-  border: none;
-  border-bottom: 2px solid red;
-  outline: none;
-  font-size: large;
-  margin: 20px;
-  min-width: 500px;
-  min-height: 100px;
-  overflow-wrap: break-word;
-  word-wrap: break-word
-}
-
 .main-cont {
   margin: 100px;
 }
