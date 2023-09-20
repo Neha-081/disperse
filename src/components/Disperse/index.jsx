@@ -90,14 +90,26 @@ const Disperse = () => {
 
   //function for keeping the first address
   const handleKeepFirst = () => {
-    let str = "";
-    arr?.filter((el) => {
+    let dupArr = [];
+    let remainArr = [];
+    arr.filter((el) => {
       Object.entries(duplicateAddress)?.map(([key, value], i) => {
         if (el.address === key && value[0] === el.index + 1) {
-          str += el.address + " " + el.amount + "\n";
-          setAddress(str);
+          dupArr.push(el);
         }
       });
+    });
+    Object.keys(duplicateAddress).filter((id) => {
+      remainArr.push(id);
+    });
+
+    const finalArr = arr
+      ?.filter((el) => !remainArr.includes(el.address))
+      ?.concat(dupArr);
+    let str = "";
+    finalArr?.map((item) => {
+      str += item.address + " " + item.amount + "\n";
+      setAddress(str);
     });
   };
 
@@ -106,12 +118,8 @@ const Disperse = () => {
     const sumRes = mergeAndCount(arr);
     let str = "";
     sumRes?.map((item) => {
-      Object.entries(duplicateAddress)?.map(([key, value], i) => {
-        if (item.address === key && value[0] === item.index + 1) {
           str += item.address + " " + item.amount + "\n";
           setAddress(str);
-        }
-      });
     });
   };
 
@@ -119,12 +127,6 @@ const Disperse = () => {
     <>
       <h2>Validate your Address</h2>
       <div className="main-cont">
-        {/* <textarea
-          rows = {arr?.length} 
-          value={address}
-          onChange={handleAddressChange}
-          placeholder="Type here..."
-        /> */}
          <TextAreaWithLineNumber value={address} onChange={handleAddressChange}/>
       </div>
       <button onClick={handleValidate} className="button">
